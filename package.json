@@ -1,0 +1,19 @@
+{
+  "name": "34.entrega-moviesapi",
+  "version": "1.0.0",
+  "description": "Projeto desenvolvido como desafio na RocketSeat",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "dev" : "nodemon ./src/server.js"
+  },
+  "keywords": [],
+  "author": "Leonardo Nunes",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
