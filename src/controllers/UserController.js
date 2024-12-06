@@ -9,7 +9,7 @@ const { hash, compare } = require('bcryptjs');
 
 class UserController {
 
-  async create(request, response) {
+      async create(request, response) {
     const { name, email, password } = request.body;
 
     const database = await sqliteConnection();
@@ -31,7 +31,7 @@ class UserController {
 
   }
 
- async update (request ,response) {
+      async update (request, response) {
   const { name, email, password, old_password} = request.body;
   const {id} = request.params;
 
