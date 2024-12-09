@@ -12,18 +12,18 @@ class NotesController {
         const [note_id] = await knex("movie_notes").insert({
             title,
             description,
-            rating,
-        })
+            rating
+        });
 
-        const tagsInsert = tags.map(tag =>{
+        const tagsInsert = tags.map(name =>{
             return {
                 note_id,
                 name,
                 user_id
             }
-        })
+        });
 
-        await knex("tags").insert(tagsInsert)
+        await knex("tags").insert(tagsInsert);
 
 
 
