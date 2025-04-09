@@ -1,5 +1,6 @@
 const{ Router } = require ("express");
 
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
 const NotesController = require("../controllers/NotesController");
 const AppError = require("../utils/AppError");
 
@@ -8,12 +9,17 @@ const notesRoutes = Router();
 const notesController = new NotesController();
 
 
-function middleWare(request,response,next){
+
+function middle(request,response,next){
     let { rating } = request.body
     
     function isValidRating(input) {
         const ratingCompare = /^[1-5]$/;
-        return ratingCompare.test(input);
+        return ratingCompare.test(String(input));
+    }
+
+    if (!rating) {
+        throw new AppError("Rating é obrigatório.");
     }
 
     if(!isValidRating(rating)){
@@ -23,11 +29,13 @@ function middleWare(request,response,next){
     next()
 }
 
+notesRoutes.use(ensureAuthenticated);
 
-notesRoutes.post("/:user_id", middleWare, notesController.create);
+notesRoutes.post("/",middle,notesController.create);
 notesRoutes.get("/:id", notesController.show);
 notesRoutes.delete("/:id", notesController.delete);
 notesRoutes.get("/", notesController.index);
+
 module.exports = notesRoutes;
 
 

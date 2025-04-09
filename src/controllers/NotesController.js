@@ -1,11 +1,12 @@
-const { compare } = require("bcryptjs");
+
 const knex = require("../database/knex");
-const AppError = require("../utils/AppError");
 
 class NotesController {
     async create(request, response) {
-        const {title, description, rating, tags} = request.body;
-        const {user_id} = request.params;
+        const { title, description, rating, tags } = request.body;
+        
+        const user_id = request.user.id;
+        
         const [note_id] = await knex("movie_notes").insert({
             title,
             description,
@@ -23,15 +24,15 @@ class NotesController {
 
         await knex("tags").insert(tagsInsert);
 
-
-
-        response.json({
+        return response.json({
             message:`A nota do Filme: ( ${title} ), foi criada com sucesso.`
         });
     }
 
+    
     async show(request, response) {
-        const {id} = request.params;
+        
+        const { id } = request.params
 
         const note = await knex("movie_notes").where({ id }).first();
 
@@ -44,11 +45,11 @@ class NotesController {
     }
     
     async delete(request, response) {
-        const {id} = request.params;
+        const { id } = request.params;
 
         await knex("movie_notes").where({id}).delete();
 
-        response.json({
+        return response.json({
             message: `a nota de id: ( ${id} ) ,foi deletada com sucesso.`
         });
 
@@ -57,7 +58,8 @@ class NotesController {
 
     async index(request, response) {
         
-        const {title,user_id,tags} = request.query;
+        const { title,tags } = request.query;
+        const user_id = request.user.id;
 
         let notes;
 
